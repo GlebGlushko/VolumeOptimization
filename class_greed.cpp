@@ -50,7 +50,7 @@ public:
                 flag = true;
                 break;
             } else sum+=val[i].w*take[i];
-            take[j] =  !(sum>c || flag);
+            take[j] =  !(sum + val[j].w > c || flag);
             //cout<<take[j]<<' '<<sum<<"\n";
         }
     //cout<<"----------\n";
