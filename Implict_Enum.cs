@@ -72,7 +72,7 @@ namespace greed
                     break;
                 }
             }
-            if (!flag) this.nodes.Add(new Node(null,yes));
+            if (!flag && PsumYes >= this.minimum) this.nodes.Add(new Node(null,yes));
             calcImplic(yes);
             ////////////////////////
             
@@ -86,7 +86,7 @@ namespace greed
                     break;
                 }
             }
-            if (!flag) this.nodes.Add(new Node(null, no));
+            if (!flag && PsumNo >= this.minimum) this.nodes.Add(new Node(null, no));
 
 
         }
