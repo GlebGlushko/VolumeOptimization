@@ -8,21 +8,22 @@ namespace greed
 {
     class Element
     {
+        public const double eps = 1e-5;
         public int n { get; set;}
         public int c{ get; set;}   
-        public List<int> p{ get; set;}
-        public List<int> w{ get; set;}
-        public List<bool> take{ get; set;}
+        public List<double> p{ get; set;}
+        public List<double> w{ get; set;}
+        public List<double> take{ get; set;}
         public Dictionary<KeyValuePair<int, int>, bool> E{ get; set;}
         
-        public Element(int n, int c, List<int> p, List<int> w )
+        public Element(int n, int c, List<double> p, List<double> w )
         {
             this.n = n;
             this.c = c;
             this.p = p;
             this.w = w;
             //this.E = E;
-            this.take = new List<bool>();
+            this.take = new List<double>();
             this.E = new Dictionary<KeyValuePair<int, int>, bool>();// else this.E = E;
 
         }
@@ -44,61 +45,32 @@ namespace greed
             return res;
             //+this.w.ToString() + "\n points = " + this.p.ToString();
         }
-        public int Calculate()
+        public double Calculate()
         {
             for (int j = 0; j < this.n; ++j)
             {
-                this.take.Add(false);
+                this.take.Add(0);
                 bool flag = false;
-                int sum = 0;
+                double sum = 0;
                 for (int i = 0; i < j; ++i)
                 {
-                    if (this.take[i] && this.E.ContainsKey(new KeyValuePair<int, int>(i, j)))
+                    if (Math.Abs(this.take[i]-1)<eps && this.E.ContainsKey(new KeyValuePair<int, int>(i+1, j+1)))
                     {
                         flag = true;
                         break;
                     }
                     else
-                        if (this.take[i]) sum += this.w[i];
+                        if (Math.Abs(this.take[i]-1)<eps) sum += this.w[i];
                 }
-                if (sum + this.w[j] <= this.c && !flag) this.take[j] = true; 
+                if (sum + this.w[j] <= this.c && !flag) this.take[j] = 1; 
             }
-            int ans = 0;
+            double ans = 0;
             for (int i = 0; i < this.n; ++i)
-                if (this.take[i]) ans += this.p[i];
+                if (Math.Abs(this.take[i] -1 )<eps) ans += this.p[i];
             return ans;
         }
 
     }
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            int n, c;
-            List<int> p = new List<int>();
-            List<int> w = new List<int>();
-            n = Int32.Parse(Console.ReadLine());
-            c = Int32.Parse(Console.ReadLine());
-            string[] pp = Console.ReadLine().Split(' ');
-            string[] ww = Console.ReadLine().Split(' ');
-            for (int i = 0; i < pp.Length; ++i)
-            {
-                p.Add(Int32.Parse(pp[i]));
-                w.Add(Int32.Parse(ww[i]));
-            }
-            Implict_enum check = new Implict_enum(n, c, p, w, 10);
-            int m = Int32.Parse(Console.ReadLine());
-            string[] xy;
-            for (int i = 0; i < m; ++i)
-            {
-                xy = Console.ReadLine().Split(' ');
-                check.AddForbidden(Int32.Parse(xy[0]), Int32.Parse(xy[1]));
-            }
-            Console.WriteLine(check);
-            List<bool> kk = new List<bool>();
-            kk.Add(false);
-            check.calcImplic(kk); 
-            //check.calcImplic(new List<bool>(true));
-        }
-    }
+
 }
+
