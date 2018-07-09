@@ -80,12 +80,12 @@ namespace greed
                  for (int j=0;j<i;++j)
                      if (this.p[this.pos[i]] / this.w[this.pos[i]] > this.p[this.pos[j]] / this.w[this.pos[j]])
                      {
-                         double change = this.p[this.pos[i]];
-                         this.p[this.pos[i]] = this.p[this.pos[j]];
-                         this.p[this.pos[j]] = change;
-                         change = this.w[this.pos[i]];
-                         this.w[this.pos[i]] = this.w[this.pos[j]];
-                         this.w[this.pos[j]] = change;
+                         //double change = this.p[this.pos[i]];
+                         //this.p[this.pos[i]] = this.p[this.pos[j]];
+                         //this.p[this.pos[j]] = change;
+                         //change = this.w[this.pos[i]];
+                         //this.w[this.pos[i]] = this.w[this.pos[j]];
+                         //this.w[this.pos[j]] = change;
                          int change_pos = this.pos[i];
                          this.pos[i] = this.pos[j];
                          this.pos[j] = change_pos;
@@ -96,9 +96,15 @@ namespace greed
         {
 
             ///////pre solution
-            double ans = 0;
+            double ans = 0, pre_sum = 0;
             for (int i = 0; i < this.n; ++i)
-                ans += this.p[i];
+            {
+                ans+= this.p[i] * Math.Min(1.0,(this.c - pre_sum)/this.w[i]);
+                //pre_sum += Math.Max(0, this.c - pre_sum);
+                if (this.c - pre_sum >= this.w[i]) pre_sum += this.w[i];
+                else break;
+            }
+                //ans += this.p[i];
             return ans;
             ///////pre solition
 
